@@ -1,4 +1,4 @@
-import ru.azarov.mergingfiles.MergeUtil;
+import ru.azarov.mergingfiles.Sorter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args)  {
-        List<Integer> list = List.of(1,4,6,9);
-        List<Integer> list2 = List.of(3,4,9,12,15);
+    public static void main(String[] args) {
+        List<List<Integer>> listOfLists = new ArrayList<>();
+        listOfLists.add(List.of(1, 5, 7, 9, 12));
+        listOfLists.add(List.of(3, 4, 6, 8, 11111));
+        listOfLists.add(List.of(2, 5, 10, 14, 120));
 
-        List<Integer> result = new ArrayList<>();
-        MergeUtil.merge2Files(result, list, list2);
-        System.out.println(result);
+        Sorter.mergeFiles(listOfLists);
     }
 }
