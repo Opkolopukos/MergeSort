@@ -1,6 +1,4 @@
-
-
-import ru.Azarov.mergingfiles.MergeUtil;
+import ru.azarov.mergingfiles.MergeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +17,12 @@ import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args) {
-        int[] first = {3,5,8,10,124,125};
-        int[] second = {22,45,61,63,150};
+    public static void main(String[] args)  {
+        List<Integer> list = List.of(1,4,6,9);
+        List<Integer> list2 = List.of(3,4,9,12,15);
+
         List<Integer> result = new ArrayList<>();
-        MergeUtil.merge(first, second, result);
+        MergeUtil.merge2Files(result, list, list2);
         System.out.println(result);
     }
 }

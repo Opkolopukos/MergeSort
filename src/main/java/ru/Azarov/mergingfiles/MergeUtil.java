@@ -1,41 +1,42 @@
-package ru.Azarov.mergingfiles;
+package ru.azarov.mergingfiles;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 /**
- * Merge two collections(input) into one (output)
+ * Merging two files into one
  */
 
 public class MergeUtil {
     private static final File output = new File("FileMergeOutput.txt");
+    private static final List<List<Integer>> inputsList = new ArrayList<>();
 
-    public static void merge(int[] first, int[] second, List<Integer> output) {
-
+    @SafeVarargs
+    public static void merge2Files(List<Integer> output, List<Integer>... lists) {
+        int n = 0;
+        while (n < lists.length) {
+            inputsList.add(lists[n++]);
+        }
         try (PrintWriter pw = new PrintWriter(MergeUtil.output)) {
-
-        int i = 0, j = 0;
-        while (i < first.length && j < second.length) {
-            if (first[i] < second[j]) {
-                pw.write(first[i]+"\n");
-                output.add(first[i++]);
-            } else {
-                pw.write(second[j]+"\n");
-                output.add(second[j++]);
+            int i = 0, j = 0;
+            while (i < inputsList.get(0).size() && j < inputsList.get(1).size()) {
+                if (inputsList.get(0).get(i) < inputsList.get(1).get(j)) {
+                    pw.write(inputsList.get(0).get(i) + "\n");
+                    output.add(inputsList.get(0).get(i++));
+                } else {
+                    pw.write(inputsList.get(1).get(j) + "\n");
+                    output.add(inputsList.get(1).get(j++));
+                }
             }
-        }
+            while (i < inputsList.get(0).size()) {
+                pw.write(inputsList.get(0).get(i) + "\n");
+                output.add(inputsList.get(0).get(i++));
+            }
 
-        while (i < first.length) {
-            pw.write(first[i]+"\n");
-            output.add(first[i++]);
-        }
-
-        while (j < second.length) {
-            pw.write(second[j]+"\n");
-            output.add(second[j++]);
-        }
+            while (j < inputsList.get(1).size()) {
+                pw.write(inputsList.get(1).get(j) + "\n");
+                output.add(inputsList.get(1).get(j++));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
