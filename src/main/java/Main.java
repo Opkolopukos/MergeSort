@@ -1,7 +1,7 @@
-import ru.azarov.mergingfiles.Sorter;
 
-import java.util.ArrayList;
-import java.util.List;
+import ru.azarov.mergingfiles.MergeUtils;
+
+import java.io.IOException;
 
 /**
  * Параметры программы задаются при запуске через аргументы командной строки, по порядку:
@@ -17,12 +17,7 @@ import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args) {
-        List<List<Integer>> listOfLists = new ArrayList<>();
-        listOfLists.add(List.of(1, 5, 7, 9, 12));
-        listOfLists.add(List.of(3, 4, 6, 8, 11111));
-        listOfLists.add(List.of(2, 5, 10, 14, 120));
-
-        Sorter.mergeFiles(listOfLists);
+    public static void main(String[] args) throws IOException {
+        MergeUtils.mergeFiles("out.txt", "in1.txt", "in2.txt", "in3.txt");
     }
 }
