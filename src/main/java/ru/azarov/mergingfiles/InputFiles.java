@@ -25,10 +25,18 @@ public class InputFiles {
         }
     }
 
-    public List<Integer> getFileAsList(int index) throws IOException {
+    public List<Integer> getFileAsIntegerList(int index) throws IOException {
         List<Integer> result = new ArrayList<>();
         while (bufferedReaders.get(index).ready()) {
             result.add(Integer.valueOf(bufferedReaders.get(index).readLine()));
+        }
+        return result;
+    }
+
+    public List<String> getFileAsStringList(int index) throws IOException {
+        List<String> result = new ArrayList<>();
+        while (bufferedReaders.get(index).ready()) {
+            result.add(bufferedReaders.get(index).readLine());
         }
         return result;
     }

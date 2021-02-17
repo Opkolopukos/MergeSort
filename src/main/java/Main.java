@@ -18,6 +18,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        MergeUtils.mergeFiles("out.txt", "in1.txt", "in2.txt", "in3.txt");
+        MergeUtils.mergeFiles(false, "out.txt", "in1.txt", "in2.txt");
+
     }
 }
