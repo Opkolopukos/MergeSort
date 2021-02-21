@@ -1,4 +1,4 @@
-package ru.azarov.mergingfiles;
+package merging;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

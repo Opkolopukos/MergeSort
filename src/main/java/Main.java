@@ -1,5 +1,6 @@
 
-import ru.azarov.mergingfiles.MergeUtils;
+import merging.ContentsType;
+import merging.MergeUtils;
 
 import java.io.IOException;
 
@@ -18,7 +19,6 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        MergeUtils.mergeFiles(false, "out.txt", "in1.txt", "in2.txt");
-
+        MergeUtils.mergeFiles(ContentsType.INTEGER,"out.txt", "resources/integerContent/in1.txt", "resources/integerContent/in2.txt");
     }
 }
