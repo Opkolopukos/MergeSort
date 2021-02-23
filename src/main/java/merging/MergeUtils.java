@@ -1,9 +1,13 @@
 package merging;
 
+import input.InputFiles;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -11,15 +15,24 @@ import java.util.PriorityQueue;
  */
 
 public class MergeUtils {
-    static public void mergeFiles(ContentsType type, String output, String... fileNames) throws IOException {
-        InputFiles inputFiles = new InputFiles(fileNames);
+    static public void mergeFiles(boolean isAscendingSort, boolean isStringSort, String output, List<String> inputFileNames) throws IOException {
+        InputFiles inputFiles = new InputFiles(inputFileNames);
         File outputFile = new File(output);
-        if (type == ContentsType.STRING) {
-            PriorityQueue<Nodes.StringHeapNode> queue = new PriorityQueue<>();
-            try (PrintWriter printWriter = new PrintWriter(outputFile)) {
-                for (int i = 0; i < fileNames.length; i++) {
+        if (isStringSort) {
+            PriorityQueue<Nodes.StringHeapNode> queue;
+            if (isAscendingSort) {
+                queue = new PriorityQueue<>();
+                for (int i = 0; i < inputFileNames.size(); i++) {
                     queue.add(new Nodes.StringHeapNode(inputFiles.getFileAsStringList(i), 0));
                 }
+            } else {
+                queue = new PriorityQueue<>(Comparator.reverseOrder());
+                for (int i = 0; i < inputFileNames.size(); i++) {
+                    queue.add(new Nodes.StringHeapNode(inputFiles.getFileAsReversedStringList(i), 0));
+                }
+            }
+
+            try (PrintWriter printWriter = new PrintWriter(outputFile)) {
                 while (!queue.isEmpty()) {
                     // Extract min element from the queue
                     Nodes.StringHeapNode node = queue.poll();
@@ -34,12 +47,20 @@ public class MergeUtils {
                 e.printStackTrace();
             }
         }
-        if (type == ContentsType.INTEGER) {
-            PriorityQueue<Nodes.IntegerHeapNode> queue = new PriorityQueue<>();
-            try (PrintWriter printWriter = new PrintWriter(outputFile)) {
-                for (int i = 0; i < fileNames.length; i++) {
+        if (!isStringSort) {
+            PriorityQueue<Nodes.IntegerHeapNode> queue;
+            if (isAscendingSort) {
+                queue = new PriorityQueue<>();
+                for (int i = 0; i < inputFileNames.size(); i++) {
                     queue.add(new Nodes.IntegerHeapNode(inputFiles.getFileAsIntegerList(i), 0));
                 }
+            } else {
+                queue = new PriorityQueue<>(Comparator.reverseOrder());
+                for (int i = 0; i < inputFileNames.size(); i++) {
+                    queue.add(new Nodes.IntegerHeapNode(inputFiles.getFileAsReversedIntegerList(i), 0));
+                }
+            }
+            try (PrintWriter printWriter = new PrintWriter(outputFile)) {
                 while (!queue.isEmpty()) {
                     // Extract min element from the queue
                     Nodes.IntegerHeapNode node = queue.poll();

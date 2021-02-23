@@ -1,8 +1,10 @@
+import cmdline.CmdLineParser;
+// fixme сортировка чисел идёт, даже если в параментрах указана сортировка строк
+// fixme сортирует разные типы данных (строки с числами)
+// fixme страшный говнокод в mergeUtils и inputFiles
+// fixme обработать нестандартные случаи параметров командной строки
+// fixme переделать алгоритм мержа
 
-import merging.ContentsType;
-import merging.MergeUtils;
-
-import java.io.IOException;
 
 /**
  * Параметры программы задаются при запуске через аргументы командной строки, по порядку:
@@ -14,11 +16,14 @@ import java.io.IOException;
  * sort-it.exe -i -a out.txt in.txt (для целых чисел по возрастанию)
  * sort-it.exe -s out.txt in1.txt in2.txt in3.txt (для строк по возрастанию)
  * sort-it.exe -d -s out.txt in1.txt in2.txt (для строк по убыванию)
+ *
+ *  -i -a out.txt in1.txt in2.txt
+ *   -s -d out.txt in1.txt in2.txt in3.txt
+ *    -i -d out.txt in1.txt in2.txt in3.txt
  */
 
-
-public class Main {
-    public static void main(String[] args) throws IOException {
-        MergeUtils.mergeFiles(ContentsType.INTEGER,"out.txt", "resources/integerContent/in1.txt", "resources/integerContent/in2.txt");
+public class RunMerge {
+    public static void main(String[] args)  {
+        new CmdLineParser().parseCmd(args);
     }
 }

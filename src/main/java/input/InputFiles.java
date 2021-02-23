@@ -1,4 +1,4 @@
-package merging;
+package input;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,7 +14,7 @@ import java.util.List;
 public class InputFiles {
     private final List<BufferedReader> bufferedReaders = new ArrayList<>();
 
-    public InputFiles(String... filenames) {
+    public InputFiles(List<String> filenames) {
         for (String x : filenames) {
             try {
                 bufferedReaders.add(new BufferedReader(new FileReader(x)));
@@ -33,10 +33,26 @@ public class InputFiles {
         return result;
     }
 
+    public List<Integer> getFileAsReversedIntegerList(int index) throws IOException {
+        List<Integer> result = new ArrayList<>();
+        while (bufferedReaders.get(index).ready()) {
+            result.add(0, Integer.valueOf(bufferedReaders.get(index).readLine()));
+        }
+        return result;
+    }
+
     public List<String> getFileAsStringList(int index) throws IOException {
         List<String> result = new ArrayList<>();
         while (bufferedReaders.get(index).ready()) {
             result.add(bufferedReaders.get(index).readLine());
+        }
+        return result;
+    }
+
+    public List<String> getFileAsReversedStringList(int index) throws IOException {
+        List<String> result = new ArrayList<>();
+        while (bufferedReaders.get(index).ready()) {
+            result.add(0, bufferedReaders.get(index).readLine());
         }
         return result;
     }
