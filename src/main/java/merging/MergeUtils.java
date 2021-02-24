@@ -15,6 +15,7 @@ import java.util.PriorityQueue;
  */
 
 public class MergeUtils {
+
     static public void mergeFiles(boolean isAscendingSort, boolean isStringSort, String output, List<String> inputFileNames) throws IOException {
         InputFiles inputFiles = new InputFiles(inputFileNames);
         File outputFile = new File(output);
@@ -57,7 +58,7 @@ public class MergeUtils {
             } else {
                 queue = new PriorityQueue<>(Comparator.reverseOrder());
                 for (int i = 0; i < inputFileNames.size(); i++) {
-                    queue.add(new Nodes.IntegerHeapNode(inputFiles.getFileAsReversedIntegerList(i), 0));
+                    queue.add(new Nodes.IntegerHeapNode(inputFiles.getFileAsIntegerList(i), 0));
                 }
             }
             try (PrintWriter printWriter = new PrintWriter(outputFile)) {

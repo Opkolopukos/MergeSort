@@ -10,7 +10,9 @@ pom.xml
 /out
 out.txt
 .gradle
-.run
+
 in1.txt
 in2.txt
 in3.txt
+
+.run

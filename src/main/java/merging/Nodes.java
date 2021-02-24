@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Nodes {
 
+
+
     static class IntegerHeapNode implements Comparable<IntegerHeapNode> {
         List<Integer> list;
         int index;
