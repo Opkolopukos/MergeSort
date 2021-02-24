@@ -17,6 +17,12 @@ import java.util.PriorityQueue;
 public class MergeUtils {
 
     static public void mergeFiles(boolean isAscendingSort, boolean isStringSort, String output, List<String> inputFileNames) throws IOException {
+
+
+        PseudoMerge.merge(String::compareTo, x->{}, List.of());
+
+
+
         InputFiles inputFiles = new InputFiles(inputFileNames);
         File outputFile = new File(output);
         if (isStringSort) {
