@@ -1,9 +1,13 @@
 package cmdline;
 
-import merging.MergeUtils;
+import IO.*;
+import comparators.AscendingComparator;
+import comparators.Comparator;
+import comparators.DescendingComparator;
+import merging.Merger;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,53 +17,53 @@ import java.util.List;
 public class CmdLineParser {
     private boolean isCmdParsingFeasible = true;
     private boolean isFlagOutputFile = true;
-    private boolean isAscendingSort = true;
-    private boolean isStringSort = true;
+    private ContentsType contentsType = ContentsType.STRING;
+    private SortingOrder sortingOrder = SortingOrder.ASCENDING;
     private String outputFile = null;
-    private final List<String> inputFiles = new ArrayList<>();
+    private final List<String> inputNames = new ArrayList<>();
 
-    public void parseCmd(String[] args) {
+    public void parseCmd(String[] args) throws FileNotFoundException {
 
         if (args.length == 0) {
             System.out.println("No arguments were given");
             showUsage();
         }
-
         int i = 0;
         String arg;
         System.out.println("Args:" + args.length);
         while (i < args.length) {
             arg = args[i++];
             if (arg.equalsIgnoreCase("-d")) {
-                isAscendingSort = false;
+                sortingOrder = SortingOrder.DESCENDING;
             } else if (arg.equalsIgnoreCase("-a")) {
-                isAscendingSort = true;
+                sortingOrder = SortingOrder.ASCENDING;
             } else if (arg.equalsIgnoreCase("-s")) {
-                isStringSort = true;
+                contentsType = ContentsType.STRING;
             } else if (arg.equalsIgnoreCase("-i")) {
-                isStringSort = false;
+                contentsType = ContentsType.INTEGER;
             } else {
                 if (isFlagOutputFile) {
                     isFlagOutputFile = false;
                     outputFile = arg;
                 } else {
-                    inputFiles.add(arg);
+                    inputNames.add(arg);
                 }
             }
         }
+        System.out.println(inputNames);
 
         if (outputFile == null) {
             System.out.println("Param 'Output File' missing");
             isCmdParsingFeasible = false;
         }
-        if (inputFiles.size() == 0) {
+        if (inputNames.size() == 0) {
             System.out.println("Param 'Input File' missing");
             isCmdParsingFeasible = false;
         }
 
         if (isCmdParsingFeasible) {
             try {
-                for (String file : inputFiles) {
+                for (String file : inputNames) {
                     File f = new File(file);
                     boolean exists = f.exists();
                     if (!exists) {
@@ -77,17 +81,35 @@ public class CmdLineParser {
                 System.out.println("Security exception: " + se.getMessage());
                 isCmdParsingFeasible = false;
             }
-            if (!isCmdParsingFeasible) {
-                showUsage();
-                System.exit(1);
-            }
-            try {
-                MergeUtils.mergeFiles(isAscendingSort, isStringSort, outputFile, inputFiles);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            Comparator comparator = sortingOrder.equals(SortingOrder.ASCENDING) ? new AscendingComparator() : new DescendingComparator();
+            if (contentsType == ContentsType.STRING) {
+                List<InputObject<String>> stringInputList = new ArrayList<>();
+                for (String name : inputNames) {
+                    stringInputList.add(new InputObjectWithStrings(name));
+                }
+                OutputObject<String> outputObject = new OutputObjectWithStrings(outputFile);
+                Merger.merge(comparator, outputObject, stringInputList);
+                outputObject.close();
+                System.out.println("MergeSort is successfully finished");
+            } else {
+                List<InputObject<Integer>> integerInputObjects = new ArrayList<>();
+                for (String name : inputNames) {
+                    integerInputObjects.add(new InputObjectWithIntegers(name));
+                }
+                OutputObject<Integer> outputObject = new OutputObjectWithIntegers(outputFile);
+                Merger.merge(comparator, outputObject, integerInputObjects);
+                outputObject.close();
+                System.out.println("MergeSort is successfully finished");
             }
         }
+
+        if (!isCmdParsingFeasible) {
+            showUsage();
+            System.exit(1);
+        }
     }
+
 
     public static void showUsage() {
         System.out.println("Usage: program [-a|-d] <-s|-i> <outputFile> <inputFile1> <inputFile2> ... <inputFileN>");

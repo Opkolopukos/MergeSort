@@ -1,9 +1,7 @@
 import cmdline.CmdLineParser;
-// fixme сортировка чисел идёт, даже если в параментрах указана сортировка строк
-// fixme сортирует разные типы данных (строки с числами)
-// fixme страшный говнокод в mergeUtils и inputFiles
-// fixme обработать нестандартные случаи параметров командной строки
-// fixme переделать алгоритм мержа
+
+import java.io.FileNotFoundException;
+
 
 //
 
@@ -18,14 +16,17 @@ import cmdline.CmdLineParser;
  * sort-it.exe -i -a out.txt in.txt (для целых чисел по возрастанию)
  * sort-it.exe -s out.txt in1.txt in2.txt in3.txt (для строк по возрастанию)
  * sort-it.exe -d -s out.txt in1.txt in2.txt (для строк по убыванию)
- *
- *  -i -a out.txt in1.txt in2.txt
- *   -s -d out.txt in1.txt in2.txt in3.txt
- *    -i -d out.txt in1.txt in2.txt in3.txt
+ * <p>
+ * -i -a out.txt in1.txt in2.txt
+ * -s -d out.txt in1.txt in2.txt in3.txt
+ * -i -d out.txt in1.txt in2.txt in3.txt
  */
 
-public class RunMerge {
-    public static void main(String[] args)  {
+//fixme equals hashcode
+
+
+public class Main {
+    public static void main(String[] args) throws FileNotFoundException {
         new CmdLineParser().parseCmd(args);
     }
 }
