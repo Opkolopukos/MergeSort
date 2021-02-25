@@ -7,9 +7,6 @@ pom.xml
 /out
 out.txt
 .gradle
-in1.txt
-in2.txt
-in3.txt
 .run
 target
 src/main/resources

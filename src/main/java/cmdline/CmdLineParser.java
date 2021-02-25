@@ -17,6 +17,8 @@ import java.util.List;
 public class CmdLineParser {
     private boolean isCmdParsingFeasible = true;
     private boolean isFlagOutputFile = true;
+    private int sortingSettingsCount = 0;
+    private int typeSettingsCount = 0;
     private ContentsType contentsType = ContentsType.STRING;
     private SortingOrder sortingOrder = SortingOrder.ASCENDING;
     private String outputFile = null;
@@ -35,12 +37,16 @@ public class CmdLineParser {
             arg = args[i++];
             if (arg.equalsIgnoreCase("-d")) {
                 sortingOrder = SortingOrder.DESCENDING;
+                sortingSettingsCount++;
             } else if (arg.equalsIgnoreCase("-a")) {
                 sortingOrder = SortingOrder.ASCENDING;
+                sortingSettingsCount++;
             } else if (arg.equalsIgnoreCase("-s")) {
                 contentsType = ContentsType.STRING;
+                typeSettingsCount++;
             } else if (arg.equalsIgnoreCase("-i")) {
                 contentsType = ContentsType.INTEGER;
+                typeSettingsCount++;
             } else {
                 if (isFlagOutputFile) {
                     isFlagOutputFile = false;
@@ -51,6 +57,15 @@ public class CmdLineParser {
             }
         }
         System.out.println(inputNames);
+
+        if (sortingSettingsCount>1){
+            isCmdParsingFeasible=false;
+            System.out.println("MergeSort has stopped. Sorting order settings can be applied only once");
+        }
+        if (typeSettingsCount>1){
+            isCmdParsingFeasible=false;
+            System.out.println("MergeSort has stopped. Content type settings can be applied only once");
+        }
 
         if (outputFile == null) {
             System.out.println("Param 'Output File' missing");
@@ -82,7 +97,11 @@ public class CmdLineParser {
                 isCmdParsingFeasible = false;
             }
 
-            Comparator comparator = sortingOrder.equals(SortingOrder.ASCENDING) ? new AscendingComparator() : new DescendingComparator();
+            Comparator comparator = sortingOrder.equals(SortingOrder.ASCENDING)
+                    ? new AscendingComparator()
+                    : new DescendingComparator();
+
+
             if (contentsType == ContentsType.STRING) {
                 List<InputObject<String>> stringInputList = new ArrayList<>();
                 for (String name : inputNames) {
@@ -91,7 +110,6 @@ public class CmdLineParser {
                 OutputObject<String> outputObject = new OutputObjectWithStrings(outputFile);
                 Merger.merge(comparator, outputObject, stringInputList);
                 outputObject.close();
-                System.out.println("MergeSort is successfully finished");
             } else {
                 List<InputObject<Integer>> integerInputObjects = new ArrayList<>();
                 for (String name : inputNames) {
@@ -100,13 +118,13 @@ public class CmdLineParser {
                 OutputObject<Integer> outputObject = new OutputObjectWithIntegers(outputFile);
                 Merger.merge(comparator, outputObject, integerInputObjects);
                 outputObject.close();
-                System.out.println("MergeSort is successfully finished");
             }
+            System.out.println("MergeSort is successfully finished");
         }
 
         if (!isCmdParsingFeasible) {
             showUsage();
-            System.exit(1);
+            System.exit(0);
         }
     }
 
@@ -120,4 +138,15 @@ public class CmdLineParser {
         System.out.println("inputFile.txt: filename for input data file, required");
         System.out.println("inputFileN.txt: filename for additional input data file, optional");
     }
+
+//    static class OutputFactory{
+//
+//        static OutputObject getOutput(ContentsType type, String filename) throws FileNotFoundException {
+//            return switch (type) {
+//                case STRING -> new OutputObjectWithStrings(filename);
+//                case INTEGER -> new OutputObjectWithIntegers(filename);
+//            };
+//        }
+//
+//    }
 }

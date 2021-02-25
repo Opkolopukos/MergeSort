@@ -23,10 +23,16 @@ import java.io.FileNotFoundException;
  */
 
 //fixme equals hashcode
+//fixme
 
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
-        new CmdLineParser().parseCmd(args);
+    public static void main(String[] args) {
+        CmdLineParser cmdLineParser = new CmdLineParser();
+        try {
+            cmdLineParser.parseCmd(args);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

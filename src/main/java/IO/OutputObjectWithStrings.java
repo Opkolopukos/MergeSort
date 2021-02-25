@@ -19,7 +19,7 @@ public class OutputObjectWithStrings implements OutputObject<String> {
         if (!value.contains(" ")) {
             printWriter.println(value);
         } else {
-            System.out.print("element is skipped due to whitespace -> ");
+            System.out.println("Attention! Element \"" + value + "\" is skipped due to whitespace ");
         }
     }
 
