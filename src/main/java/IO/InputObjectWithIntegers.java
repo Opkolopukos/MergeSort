@@ -28,6 +28,8 @@ public class InputObjectWithIntegers implements InputObject<Integer> {
                 return Integer.parseInt(reader.readLine());
             } catch (NumberFormatException | IOException e) {
                 System.out.println("can't parse this value to Integer");
+                System.out.println("Either change [-d|-s] settings or choose appropriate input files");
+                System.exit(0);
             }
         }
         return null;

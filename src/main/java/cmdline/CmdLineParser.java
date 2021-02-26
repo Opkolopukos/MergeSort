@@ -7,7 +7,6 @@ import comparators.DescendingComparator;
 import merging.Merger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,16 +18,17 @@ public class CmdLineParser {
     private boolean isFlagOutputFile = true;
     private int sortingSettingsCount = 0;
     private int typeSettingsCount = 0;
-    private ContentsType contentsType = ContentsType.STRING;
+    private ContentsType contentsType = null;
     private SortingOrder sortingOrder = SortingOrder.ASCENDING;
     private String outputFile = null;
     private final List<String> inputNames = new ArrayList<>();
 
-    public void parseCmd(String[] args) throws FileNotFoundException {
+    public void parseCmd(String[] args) {
 
         if (args.length == 0) {
             System.out.println("No arguments were given");
             showUsage();
+            System.exit(0);
         }
         int i = 0;
         String arg;
@@ -58,22 +58,36 @@ public class CmdLineParser {
         }
         System.out.println(inputNames);
 
-        if (sortingSettingsCount>1){
-            isCmdParsingFeasible=false;
-            System.out.println("MergeSort has stopped. Sorting order settings can be applied only once");
+        if (sortingSettingsCount > 1) {
+            isCmdParsingFeasible = false;
+            System.out.println("MergeSort has stopped. Sorting order param can be applied only once");
+            showUsage();
+            System.exit(0);
         }
-        if (typeSettingsCount>1){
-            isCmdParsingFeasible=false;
-            System.out.println("MergeSort has stopped. Content type settings can be applied only once");
+        if (typeSettingsCount > 1) {
+            isCmdParsingFeasible = false;
+            System.out.println("MergeSort has stopped. Content type param can be applied only once");
+            showUsage();
+            System.exit(0);
+        }
+        if (typeSettingsCount == 0) {
+            isCmdParsingFeasible = false;
+            System.out.println("MergeSort has stopped. All required parameters should be set");
+            showUsage();
+            System.exit(0);
         }
 
         if (outputFile == null) {
             System.out.println("Param 'Output File' missing");
             isCmdParsingFeasible = false;
+            showUsage();
+            System.exit(0);
         }
         if (inputNames.size() == 0) {
             System.out.println("Param 'Input File' missing");
             isCmdParsingFeasible = false;
+            showUsage();
+            System.exit(0);
         }
 
         if (isCmdParsingFeasible) {
@@ -119,7 +133,7 @@ public class CmdLineParser {
                 Merger.merge(comparator, outputObject, integerInputObjects);
                 outputObject.close();
             }
-            System.out.println("MergeSort is successfully finished");
+            System.out.println("MergeSort is successfully finished!");
         }
 
         if (!isCmdParsingFeasible) {
@@ -128,7 +142,6 @@ public class CmdLineParser {
         }
     }
 
-
     public static void showUsage() {
         System.out.println("Usage: program [-a|-d] <-s|-i> <outputFile> <inputFile1> <inputFile2> ... <inputFileN>");
         System.out.println("-a: set ascending sorting order (default), optional ");
@@ -136,17 +149,6 @@ public class CmdLineParser {
         System.out.println("-s|-i: String or Integer input data type, required");
         System.out.println("outputFilename.txt: filename for output data file, required");
         System.out.println("inputFile.txt: filename for input data file, required");
-        System.out.println("inputFileN.txt: filename for additional input data file, optional");
+        System.out.println("inputFileN.txt: filename for additional input data files, optional");
     }
-
-//    static class OutputFactory{
-//
-//        static OutputObject getOutput(ContentsType type, String filename) throws FileNotFoundException {
-//            return switch (type) {
-//                case STRING -> new OutputObjectWithStrings(filename);
-//                case INTEGER -> new OutputObjectWithIntegers(filename);
-//            };
-//        }
-//
-//    }
 }

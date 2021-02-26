@@ -4,11 +4,14 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public class OutputObjectWithIntegers implements OutputObject<Integer> {
-    private final PrintWriter printWriter;
+    private PrintWriter printWriter;
 
-
-    public OutputObjectWithIntegers(String outputFilename) throws FileNotFoundException {
-        this.printWriter = new PrintWriter(outputFilename);
+    public OutputObjectWithIntegers(String outputFilename) {
+        try {
+            this.printWriter = new PrintWriter(outputFilename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
