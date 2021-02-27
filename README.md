@@ -1,3 +1,1 @@
-# MergeSort
-
-CFT test task
+# Petproject
