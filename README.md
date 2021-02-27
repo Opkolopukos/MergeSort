@@ -1,2 +1,2 @@
 # MergeSort
-CFT test task
+Myproject
