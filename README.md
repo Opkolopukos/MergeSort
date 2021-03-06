@@ -1,6 +1,4 @@
-# MergeSort
-
-CFT test task
+MergeSort
 
 Запуск сортировки возможен через командную строку - необходимо перейти в директорию MergeSort и запускать обработку в соответствии с условиями задачи.
 Файлы с входными данными для сортировки необходимо поместить в папку MergeSort. Файл с результатом появится тамже. 
@@ -20,4 +18,3 @@ CFT test task
    java -jar MergeSort -i -a out.txt in.txt (для целых чисел по возрастанию)
    java -jar MergeSort -s out.txt in1.txt in2.txt in3.txt (для строк по возрастанию)
    java -jar MergeSort -d -s out.txt in1.txt in2.txt (для строк по убыванию)
- 
