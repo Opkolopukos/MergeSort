@@ -3,7 +3,12 @@ plugins {
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ru.test.Main'
+    }
+}
 
 repositories {
     mavenCentral()

@@ -1,17 +1,13 @@
-package IO;
+package ru.test.io;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public class OutputObjectWithIntegers implements OutputObject<Integer> {
-    private PrintWriter printWriter;
+    private final PrintWriter printWriter;
 
-    public OutputObjectWithIntegers(String outputFilename) {
-        try {
-            this.printWriter = new PrintWriter(outputFilename);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public OutputObjectWithIntegers(String outputFilename) throws FileNotFoundException {
+        this.printWriter = new PrintWriter(outputFilename);
     }
 
     @Override
@@ -19,7 +15,7 @@ public class OutputObjectWithIntegers implements OutputObject<Integer> {
         try {
             printWriter.println(value);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 

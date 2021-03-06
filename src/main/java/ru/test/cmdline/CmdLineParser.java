@@ -1,10 +1,4 @@
-package cmdline;
-
-import IO.*;
-import comparators.AscendingComparator;
-import comparators.Comparator;
-import comparators.DescendingComparator;
-import merging.Merger;
+package ru.test.cmdline;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -111,29 +105,6 @@ public class CmdLineParser {
                 isCmdParsingFeasible = false;
             }
 
-            Comparator comparator = sortingOrder.equals(SortingOrder.ASCENDING)
-                    ? new AscendingComparator()
-                    : new DescendingComparator();
-
-
-            if (contentsType == ContentsType.STRING) {
-                List<InputObject<String>> stringInputList = new ArrayList<>();
-                for (String name : inputNames) {
-                    stringInputList.add(new InputObjectWithStrings(name));
-                }
-                OutputObject<String> outputObject = new OutputObjectWithStrings(outputFile);
-                Merger.merge(comparator, outputObject, stringInputList);
-                outputObject.close();
-            } else {
-                List<InputObject<Integer>> integerInputObjects = new ArrayList<>();
-                for (String name : inputNames) {
-                    integerInputObjects.add(new InputObjectWithIntegers(name));
-                }
-                OutputObject<Integer> outputObject = new OutputObjectWithIntegers(outputFile);
-                Merger.merge(comparator, outputObject, integerInputObjects);
-                outputObject.close();
-            }
-            System.out.println("MergeSort is successfully finished!");
         }
 
         if (!isCmdParsingFeasible) {
@@ -150,5 +121,21 @@ public class CmdLineParser {
         System.out.println("outputFilename.txt: filename for output data file, required");
         System.out.println("inputFile.txt: filename for input data file, required");
         System.out.println("inputFileN.txt: filename for additional input data files, optional");
+    }
+
+    public ContentsType getContentsType() {
+        return contentsType;
+    }
+
+    public SortingOrder getSortingOrder() {
+        return sortingOrder;
+    }
+
+    public String getOutputFileName() {
+        return outputFile;
+    }
+
+    public List<String> getInputFileNames() {
+        return inputNames;
     }
 }
